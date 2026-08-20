@@ -82,9 +82,20 @@
   .top-back a{display:inline-flex;align-items:center;gap:4px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-size:13px;font-weight:700;padding:7px 16px;border-radius:18px}
   .top-back a:active{background:var(--brand);color:#fff}
   .back:active{background:var(--brand);color:#fff}
+  .wx-tip{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.8);display:none;flex-direction:column;align-items:flex-end;padding:10px 16px 0}
+  .wx-tip.show{display:flex}
+  .wx-tip .arrow{font-size:32px;color:#fff;line-height:1;margin-right:4px;animation:bob 1.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .wx-tip .box{margin-top:8px;color:#fff;font-size:14px;font-weight:700;line-height:1.6;text-align:right;max-width:82%}
+  .wx-tip .box b{color:#ffd54a}
+  .wx-tip .box .sub{display:block;font-size:12px;font-weight:400;opacity:.88;margin-top:5px}
 </style>
 </head>
 <body>
+<div class="wx-tip" id="wxTip" onclick="this.classList.remove('show')">
+  <div class="arrow">↗</div>
+  <div class="box">点击右上角 <b>···</b><span class="sub">选择「在浏览器打开」<br>表单填写 / 地图导航更顺畅</span></div>
+</div>
 <div class="wrap">
 
   <!-- ===== 入口视图 ===== -->
@@ -265,6 +276,13 @@
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){var o=btn.textContent;btn.textContent='已复制';btn.style.background='#22c55e';btn.style.color='#fff';btn.style.borderColor='#22c55e';setTimeout(function(){btn.textContent=o;btn.style.background='';btn.style.color='';btn.style.borderColor='';},1500)});}
     else{var t=document.createElement('textarea');t.value=text;t.style.position='fixed';t.style.left='-9999px';document.body.appendChild(t);t.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(t);var o=btn.textContent;btn.textContent='已复制';setTimeout(function(){btn.textContent=o;},1500);}
   }
+  (function(){
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.indexOf('micromessenger') > -1){
+      var tip = document.getElementById('wxTip');
+      if(tip){ tip.classList.add('show'); }
+    }
+  })();
 </script>
 </body>
 </html>
